@@ -1,0 +1,89 @@
+﻿@model BalanceTest.Models.AddBalance
+
+<form method="post" asp-action="DeletePost">
+
+    <input asp-for="Id" hidden />
+
+    <div class="border p-3">
+
+        <div class="form-group row">
+            <h2 class="text-info pl-3">Удалить транзакцию</h2>
+        </div>
+
+        <div class="row">
+            <div class="col-8">
+
+                <div class="form-group row">
+                    <div class="col-4">
+                        <label asp-for="Status"></label>
+                    </div>
+                    <div class="col-8">
+                        <input asp-for="Status" disabled class="form-control" />
+                    </div>
+                </div>
+
+                <div class="form-group row">
+                    <div class="col-4">
+                        <label asp-for="CreateUser.Login"></label>
+                    </div>
+                    <div class="col-8">
+                        <input asp-for="CreateUser.Login" disabled class="form-control" />
+                    </div>
+                </div>
+
+                <div class="form-group row">
+                    <div class="col-4">
+                        <label asp-for="TransactionId"></label>
+                    </div>
+                    <div class="col-8">
+                        <input asp-for="TransactionId" disabled class="form-control" />
+                    </div>
+                </div>
+
+                <div class="form-group row">
+                    <div class="col-4">
+                        <label asp-for="Balance"></label>
+                    </div>
+                    <div class="col-8">
+                        <input asp-for="Balance" disabled class="form-control" type="number" />
+                    </div>
+                </div>
+
+                <div class="form-group row">
+                    <div class="col-4">
+                        <label asp-for="CreateData"></label>
+                    </div>
+                    <div class="col-8">
+                        <input asp-for="CreateData" disabled class="form-control" />
+                    </div>
+                </div>
+
+                <div class="form-group row">
+                    <div class="col-4">
+                        <label asp-for="UpdateData"></label>
+                    </div>
+                    <div class="col-8">
+                        <input asp-for="UpdateData" disabled class="form-control" />
+                    </div>
+                </div>
+
+                <div class="form-group row">
+                    <div class="col-8 offset-4 row">
+                        <div class="col">
+                           <input type="submit" class="btn btn-danger w-100" value="Удалить" />
+                        </div>
+                        <div class="col">
+                            <a asp-action="Index" class="btn btn-success w-100"><i class="fas fa-sign-out-alt"></i>Назад</a>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="col-4">
+                @* Keep this empty *@
+            </div>
+
+        </div>
+    </div>
+</form>

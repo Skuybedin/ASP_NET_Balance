@@ -1,0 +1,109 @@
+﻿@model IEnumerable<BalanceTest.Models.AddBalance>
+
+<div class="container p-3">
+    <div class="row pt-4">
+        <div class="col-6">
+            <h2 class="text-primary">Список запросов</h2>
+        </div>
+        <div class="col-6 text-right">
+            <a asp-controller="AddBalance" asp-action="Add" class="btn btn-primary"><i class="fa-solid fa-plus"></i> &nbsp; Пополнить баланс</a>
+        </div>
+    </div>
+
+    <br /><br />
+
+    @if (Model.Count() > 0)
+    {
+        <table class="table table-bordered table-striped" style="width:100%">
+            <thead>
+                <tr>
+                    <th>Статус</th>
+                    <th>Логин</th>
+                    <th>Текущий баланс</th>
+                    <th>Пополнение</th>
+                    <th>Дата запроса</th>
+                    <th>Дата решения</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach(var obj in Model)
+                {
+
+                    string status = String.Empty;
+                    string color = String.Empty;
+                    if (obj.Status == Statuses.Processing) status = "В процессе";
+                    else if (obj.Status == Statuses.Approved) status = "Одобрено";
+                    else if (obj.Status == Statuses.Rejected) status = "Отклонено";
+                    else if (obj.Status == Statuses.Refund) status = "Возврат";
+                    <tr>
+                        @if (obj.Status == Statuses.Approved) color = "#00a806";
+                        else if (obj.Status == Statuses.Processing) color = "#000000";
+                        else if (obj.Status == Statuses.Rejected) color = "#e80000";
+                        else if (obj.Status == Statuses.Refund) color = "#e38800";
+                        <td width="13%"><span style="color:@color;"><b>@status</b></span></td>
+                        <td width="15%">@obj.CreateUser.Login</td>
+                        <td width="18%">@obj.CreateUser.Balance</td>
+                        @if (obj.Status == Statuses.Processing || obj.Status == Statuses.Rejected || obj.Status == Statuses.Refund)
+                        {
+                            @if (obj.Status == Statuses.Refund)
+                            {
+                                <td width="15%">@obj.Balance (возврат)</td>
+                            }
+                            else
+                            {
+                                <td width="15%">@obj.Balance</td>
+                            }
+                        }
+                        else
+                        {
+                            <td width="15%">0</td>
+                        }
+                        <td width="13%">@obj.CreateData</td>
+                        <td width="13%">@obj.UpdateData</td>
+                        <td width="13%" class="text-center">
+                            @if (obj.Status != Statuses.Approved && obj.Status != Statuses.Rejected && obj.Status != Statuses.Refund)
+                            {
+                                <div class="btn-group" role="group">
+                                <form asp-controller="AddBalance" asp-action="Confirm" asp-route-id="@obj.Id" asp-route-userId="@obj.CreateUser.Id" method="post">
+                                    <button type="submit" class="btn btn-success mx-2">
+                                        <i class="fa-solid fa-check"></i>
+                                    </button>
+                                </form>
+                                <form asp-controller="AddBalance" asp-action="Decline" asp-route-id="@obj.Id" asp-route-userId="@obj.CreateUser.Id" method="post">
+                                    <button type="submit" class="btn btn-info mx-2">
+                                        <i class="fa-solid fa-xmark"></i>
+                                    </button>
+                                </form>
+                                </div>
+                            }
+                            else
+                            {
+                                <div class="btn-group" role="group">
+                                @if (obj.Status != Statuses.Rejected && obj.Status != Statuses.Refund)
+                                {
+                                    <form asp-controller="AddBalance" asp-action="Refund" asp-route-id="@obj.Id" asp-route-userId="@obj.CreateUser.Id" method="post">
+                                        <button type="submit" class="btn btn-secondary mx-2">
+                                            <i class="fa-solid fa-rotate-left"></i>
+                                        </button>
+                                    </form>
+                                }
+                                <form asp-controller="AddBalance" asp-action="Delete" asp-route-id="@obj.Id" method="post">
+                                    <button type="submit" class="btn btn-danger mx-2">
+                                        <i class="fa-solid fa-trash-can"></i>
+                                    </button>
+                                </form>
+                                </div>
+                            }
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    }
+    else
+    {
+        <p>Активных запросов нет</p>
+    }
+
+</div>
